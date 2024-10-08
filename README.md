@@ -28,6 +28,7 @@
 ### Credits
 
 - 李綠恩 Lu-En Li [GitHub](https://github.com/LeeMegumi)
+- 薛佑廷 Yuting Hsueh [GitHub](https://github.com/hsuehyt)
 - 教育部 前瞻顯示科技與跨領域人才培育計畫 總計畫辦公室  
   **Advanced Display Technology & Interdisciplinary Talent Cultivation Project Office, Ministry of Education**
 - 臺師大 前瞻顯示科技導入藝術場域建置與推廣計畫  
