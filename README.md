@@ -22,3 +22,15 @@
 
 3. **Load the Scene**:
     - Open the `PanoramicScene` from the `Assets/StageOfLight/` folder to explore the dynamic projection system.
+
+---
+
+### Credits
+
+- 李綠恩 Lu-En Li [GitHub](https://github.com/LeeMegumi)
+- 教育部 前瞻顯示科技與跨領域人才培育計畫 總計畫辦公室  
+  **Advanced Display Technology & Interdisciplinary Talent Cultivation Project Office, Ministry of Education**
+- 臺師大 前瞻顯示科技導入藝術場域建置與推廣計畫  
+  **NTNU Advanced Display Technology Integration & Promotion in Art Venues**
+- 臺師大 美術館  
+  **NTNU Art Museum**
