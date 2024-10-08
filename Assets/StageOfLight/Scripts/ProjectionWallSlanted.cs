@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class ProjectionWallSlanted : MonoBehaviour
 {
-    public Camera Acamera;
-    public GameObject AScreenOBJ;
-    public GameObject UserOBJ;
+    public Camera Projection; // Renamed from Acamera
+    public GameObject Wall; // Renamed from AScreenOBJ
+    public GameObject PointOfView; // Renamed from UserOBJ
 
     public Vector3 OffsetAngle;
     public float BottomOffset;
     public float TopOffset;
     public float DistanceOffset;
 
-    public Vector3 userheadLimit;
+    public Vector3 UserHeadLimit; // Renamed from userheadLimit
 
     [Tooltip("Width of the display in meters.")]
-    public float screenWidth = 1.6f; // 0.88f;
+    public float screenWidth = 1.6f;
 
     [Tooltip("Height of the display in meters.")]
-    public float screenHeight = 0.9f; // 0.50f;
+    public float screenHeight = 0.9f;
 
     private float left = -0.2F;
     private float right = 0.2F;
@@ -34,45 +34,42 @@ public class ProjectionWallSlanted : MonoBehaviour
     private Matrix4x4 initialCamPrjMat = Matrix4x4.identity;
 
     private Quaternion initialHeadRot = Quaternion.Euler(0f, 180f, 0f);
+
     // Start is called before the first frame update
     void Start()
     {
-        Acamera = GetComponent<Camera>();
-        initialCamPos = Acamera.transform.position;
-        initialCamRot = Acamera.transform.rotation;
+        Projection = GetComponent<Camera>();
+        initialCamPos = Projection.transform.position;
+        initialCamRot = Projection.transform.rotation;
         initialCamMat = Matrix4x4.TRS(initialCamPos, initialCamRot, Vector3.one);
-        initialCamPrjMat = Acamera.projectionMatrix;
+        initialCamPrjMat = Projection.projectionMatrix;
     }
 
     void LateUpdate()
     {
-        userheadLimit = UserOBJ.transform.position;
+        // Get the absolute position of the user's head (PointOfView)
+        UserHeadLimit = PointOfView.transform.position;
 
-        standardUserDistance = Mathf.Abs(AScreenOBJ.transform.position.z- userheadLimit.z) + DistanceOffset;
-        left = Acamera.nearClipPlane * (-screenWidth / 2 - userheadLimit.x - AScreenOBJ.transform.position.x) / standardUserDistance; // initialRelPos.z;
-        right = Acamera.nearClipPlane * (screenWidth / 2 - userheadLimit.x - AScreenOBJ.transform.position.x) / standardUserDistance; // initialRelPos.z;
+        // Calculate standard user distance using absolute values
+        standardUserDistance = Mathf.Abs(Wall.transform.position.z - UserHeadLimit.z) + DistanceOffset;
 
+        // Calculate the new left, right, bottom, top using absolute values
+        left = Projection.nearClipPlane * (-screenWidth / 2 - UserHeadLimit.x + Wall.transform.position.x) / standardUserDistance;
+        right = Projection.nearClipPlane * (screenWidth / 2 - UserHeadLimit.x + Wall.transform.position.x) / standardUserDistance;
+        bottom = Projection.nearClipPlane * (-screenHeight / 2 + Wall.transform.position.y - UserHeadLimit.y + BottomOffset) / standardUserDistance;
+        top = Projection.nearClipPlane * (screenHeight / 2 + Wall.transform.position.y - UserHeadLimit.y + TopOffset) / standardUserDistance;
 
-        bottom = Acamera.nearClipPlane * (-screenHeight / 2 - userheadLimit.y + AScreenOBJ.transform.position.y + BottomOffset) / standardUserDistance; // initialRelPos.z;
-        top = Acamera.nearClipPlane * (screenHeight / 2 - userheadLimit.y + AScreenOBJ.transform.position.y + TopOffset) / standardUserDistance; // initialRelPos.z;
+        // Set the camera's position to the absolute head position (directly without additional matrix transformations)
+        Projection.transform.position = new Vector3(UserHeadLimit.x, UserHeadLimit.y, UserHeadLimit.z);
 
-
-        Vector3 headCamPos = new Vector3(userheadLimit.x, userheadLimit.y, userheadLimit.z);
+        // Maintain camera's rotation with the OffsetAngle applied
         Quaternion headCamRot = Quaternion.LookRotation(Vector3.forward, Vector3.up);
         Quaternion OffsetRot = Quaternion.Euler(OffsetAngle);
+        Projection.transform.rotation = headCamRot * OffsetRot;
 
-        Matrix4x4 camPoseMat = Matrix4x4.TRS(headCamPos, headCamRot * OffsetRot, Vector3.one);
-        camPoseMat = camPoseMat * initialCamMat;
-
-        Acamera.transform.position = camPoseMat.GetColumn(3);
-        Acamera.transform.localRotation = camPoseMat.rotation;
-
-
-
-        Matrix4x4 m = PerspectiveOffCenter(left, right, bottom, top, Acamera.nearClipPlane, Acamera.farClipPlane);
-
-        Acamera.projectionMatrix = m;
-
+        // Update the camera's projection matrix
+        Matrix4x4 m = PerspectiveOffCenter(left, right, bottom, top, Projection.nearClipPlane, Projection.farClipPlane);
+        Projection.projectionMatrix = m;
     }
 
     private Matrix4x4 PerspectiveOffCenter(float left, float right, float bottom, float top, float near, float far)
@@ -84,8 +81,6 @@ public class ProjectionWallSlanted : MonoBehaviour
         float c = -(far + near) / (far - near);
         float d = -(2.0F * far * near) / (far - near);
         float e = -1.0F;
-
-
 
         Matrix4x4 m = new Matrix4x4();
         m[0, 0] = x;
