@@ -287,7 +287,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 308026189}
   m_LocalRotation: {x: 0.5781424, y: 0, z: 0, w: 0.81593585}
-  m_LocalPosition: {x: 0, y: -0.005, z: -0.525}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -490,7 +490,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 587755167}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.005, z: -0.525}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -591,7 +591,7 @@ MonoBehaviour:
   UserHeadLimit: {x: 0, y: -0.005, z: -0.525}
   screenWidth: 4.37
   screenHeight: 2.48
-  standardUserDistance: 4.5
+  standardUserDistance: 2
 --- !u!1 &649620526
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,7 +747,7 @@ MonoBehaviour:
   UserHeadLimit: {x: 0, y: -0.005, z: -0.525}
   screenWidth: 4.37
   screenHeight: 2.48
-  standardUserDistance: 4.5
+  standardUserDistance: 2
 --- !u!114 &803811789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -832,7 +832,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 803811787}
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 0, y: -0.005, z: -0.525}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -866,7 +866,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897258819}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.005, z: -0.525}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -971,7 +971,7 @@ MonoBehaviour:
   userHeadLimit: {x: 0, y: -0.005, z: -0.525}
   screenWidth: 9
   screenHeight: 2
-  standardUserDistance: 0.9415386
+  standardUserDistance: 0.9475809
 --- !u!1 &933702316
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,7 +1083,7 @@ GameObject:
   - component: {fileID: 1269269716}
   - component: {fileID: 1269269715}
   - component: {fileID: 1269269718}
-  - component: {fileID: 1269269717}
+  - component: {fileID: 1269269719}
   m_Layer: 0
   m_Name: CamWallVertical
   m_TagString: Untagged
@@ -1142,33 +1142,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1269269713}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: -0.005, z: -0.525}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 561001265}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &1269269717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269269713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeaef2a79280e6642a6fd849ae7cd0fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Projection: {fileID: 1269269715}
-  Wall: {fileID: 7199855921297845948}
-  PointOfView: {fileID: 500960345}
-  UserHeadLimit: {x: 0, y: -0.005, z: -0.525}
-  DistanceOffset: 0
-  screenWidth: 9
-  screenHeight: 2.48
-  standardUserDistance: 1.562581
 --- !u!114 &1269269718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1202,6 +1182,26 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &1269269719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269269713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9a16ca9b77d5904499ae09e5138afea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Acamera: {fileID: 1269269715}
+  AScreenOBJ: {fileID: 7199855921297845948}
+  UserOBJ: {fileID: 500960345}
+  userheadLimit: {x: 0, y: -0.005, z: -0.525}
+  DistanceOffset: 0
+  screenWidth: 9
+  screenHeight: 2.48
+  standardUserDistance: 2
 --- !u!1 &1600064777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1229,7 +1229,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1600064777}
   m_LocalRotation: {x: 0.104667276, y: 0, z: 0, w: 0.9945074}
-  m_LocalPosition: {x: 0, y: -0.005, z: -0.525}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class ProjectionWallVertical : MonoBehaviour
 {
-    public Camera Projection; // Renamed from Acamera
-    public GameObject Wall; // Renamed from AScreenOBJ
-    public GameObject PointOfView; // Renamed from UserOBJ
+    public Camera Acamera;
+    public GameObject AScreenOBJ;
+    public GameObject UserOBJ;
 
-    public Vector3 UserHeadLimit; // Renamed from userheadLimit
+    public Vector3 userheadLimit;
 
     public float DistanceOffset;
 
     [Tooltip("Width of the display in meters.")]
-    public float screenWidth = 1.6f;
+    public float screenWidth = 1.6f; // 0.88f;
 
     [Tooltip("Height of the display in meters.")]
-    public float screenHeight = 0.9f;
+    public float screenHeight = 0.9f; // 0.50f;
 
     private float left = -0.2F;
     private float right = 0.2F;
@@ -31,45 +31,44 @@ public class ProjectionWallVertical : MonoBehaviour
     private Matrix4x4 initialCamPrjMat = Matrix4x4.identity;
 
     private Quaternion initialHeadRot = Quaternion.Euler(0f, 180f, 0f);
-
     // Start is called before the first frame update
     void Start()
     {
-        Projection = GetComponent<Camera>();
-        initialCamPos = Projection.transform.position;
-        initialCamRot = Projection.transform.rotation;
+        Acamera = GetComponent<Camera>();
+        initialCamPos = Acamera.transform.position;
+        initialCamRot = Acamera.transform.rotation;
         initialCamMat = Matrix4x4.TRS(initialCamPos, initialCamRot, Vector3.one);
-        initialCamPrjMat = Projection.projectionMatrix;
+        initialCamPrjMat = Acamera.projectionMatrix;
     }
 
     void LateUpdate()
     {
-        // Get the absolute position of the user's head (PointOfView)
-        UserHeadLimit = PointOfView.transform.position;
+        userheadLimit = UserOBJ.transform.position;
 
-        // Calculate standard user distance using absolute values
-        standardUserDistance = Mathf.Abs(Wall.transform.position.z - UserHeadLimit.z) + DistanceOffset;
+        standardUserDistance = Mathf.Abs(AScreenOBJ.transform.position.z- userheadLimit.z)+ DistanceOffset;
+        left = Acamera.nearClipPlane * (-screenWidth / 2 + userheadLimit.x + AScreenOBJ.transform.position.x) / standardUserDistance; // initialRelPos.z;
+        right = Acamera.nearClipPlane * (screenWidth / 2 + userheadLimit.x + AScreenOBJ.transform.position.x) / standardUserDistance; // initialRelPos.z;
 
-        // Calculate the new left, right, bottom, top using absolute values
-        left = Projection.nearClipPlane * (-screenWidth / 2 + Wall.transform.position.x - UserHeadLimit.x) / standardUserDistance;
-        right = Projection.nearClipPlane * (screenWidth / 2 + Wall.transform.position.x - UserHeadLimit.x) / standardUserDistance;
-        bottom = Projection.nearClipPlane * (-screenHeight / 2 + Wall.transform.position.y - UserHeadLimit.y) / standardUserDistance;
-        top = Projection.nearClipPlane * (screenHeight / 2 + Wall.transform.position.y - UserHeadLimit.y) / standardUserDistance;
 
-        // Create the absolute camera position and rotation
-        Vector3 headCamPos = new Vector3(UserHeadLimit.x, UserHeadLimit.y, UserHeadLimit.z);
+        bottom = Acamera.nearClipPlane * (-screenHeight / 2 - userheadLimit.y + AScreenOBJ.transform.position.y) / standardUserDistance; // initialRelPos.z;
+        top = Acamera.nearClipPlane * (screenHeight / 2 - userheadLimit.y+ AScreenOBJ.transform.position.y) / standardUserDistance; // initialRelPos.z;
+
+
+        Vector3 headCamPos = new Vector3(userheadLimit.x, userheadLimit.y, userheadLimit.z);
         Quaternion headCamRot = Quaternion.LookRotation(Vector3.forward, Vector3.up);
 
         Matrix4x4 camPoseMat = Matrix4x4.TRS(headCamPos, headCamRot, Vector3.one);
         camPoseMat = camPoseMat * initialCamMat;
 
-        // Set the camera's position and rotation to the absolute values
-        Projection.transform.position = camPoseMat.GetColumn(3);
-        Projection.transform.localRotation = camPoseMat.rotation;
+        Acamera.transform.position = camPoseMat.GetColumn(3);
+        Acamera.transform.localRotation = camPoseMat.rotation;
 
-        // Update the camera's projection matrix
-        Matrix4x4 m = PerspectiveOffCenter(left, right, bottom, top, Projection.nearClipPlane, Projection.farClipPlane);
-        Projection.projectionMatrix = m;
+
+
+        Matrix4x4 m = PerspectiveOffCenter(left, right, bottom, top, Acamera.nearClipPlane, Acamera.farClipPlane);
+       
+        Acamera.projectionMatrix = m;
+
     }
 
     private Matrix4x4 PerspectiveOffCenter(float left, float right, float bottom, float top, float near, float far)
@@ -81,6 +80,8 @@ public class ProjectionWallVertical : MonoBehaviour
         float c = -(far + near) / (far - near);
         float d = -(2.0F * far * near) / (far - near);
         float e = -1.0F;
+
+
 
         Matrix4x4 m = new Matrix4x4();
         m[0, 0] = x;
@@ -102,4 +103,6 @@ public class ProjectionWallVertical : MonoBehaviour
 
         return m;
     }
+
+    
 }
